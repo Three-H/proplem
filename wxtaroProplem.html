@@ -1,0 +1,183 @@
+<view style='overflow-y:auto;margin-bottom:70px'>
+  <view style='background:#fff;width:100%;position:relative;padding-bottom:10px;'>
+      <view style='width:98%;margin:0 auto;position:relative;z-index:1'>
+        <image src='../../../image/SelectStop/bg.png' style='position:absolute;z-index:-1;width:100%;height:100%;border-top-left-radius:8px;border-top-right-radius:8px;'></image>
+        <view style='padding:13px 0 10px 13px;font-size: 16px;color: #FFFFFF;'>
+          <text>{{schduleDate}} {{schduleTime}}发车</text>
+        </view>
+        <view style='display:flex;padding-left:13px;padding-bottom:13px;align-items:center;'>
+          <view style='flex:0 0 5%;height:100px'>
+            <image src='../../../image/SelectStop/line.png' style='width:8px;height:100%'></image>
+          </view>
+          <view style='flex:0 0 95%'>
+            <view style='font-size: 18px;color: #FFFFFF;'>{{startStop}}</view>
+            <view style='height:52px;width:80%;background: rgba(39,46,84,0.52);align-items:center;display:flex' bindtap='showPic'>
+              <view style='width:80%;padding-left:8px;'>
+                <view style='font-size: 10px;color: #BFDEFD;'>上站地址</view> 
+                <view style='font-size: 14px;color: #F2F9FF;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>{{detailAddress}}</view>
+              </view>
+              <view style='width:20%;text-align:right;margin-right:8px;'>
+                <image src='../../../image/SelectStop/map.png' style='height:13px;width:15px;'></image>
+                <image src='../../../image/SelectStop/white_cross.png' style='width:7px;height:12px;margin-left:8px'></image>
+              </view>
+            </view>
+            <view style='font-size: 18px;color: #FFFFFF;'>{{endStop}}</view>
+          </view>
+        </view>
+      </view>
+      <view style='display:flex;background:#fff;background-color:#fff;border-bottom:solid 1px #efefef;align-items:center;border-bottom-left-radius:8px;border-bottom-right-radius:8px;box-shadow:0px 18px 18px -10px #e6e6e6;padding:12px 0;width:98%;margin:0 auto;'  bindtap='showNotice'>
+          <view style='margin-left:13px;font-size: 14px;color: #4CA7FD;flex:1'><image src='../../../image/SelectStop/warn.png' style='width:18px;height:18px;vertical-align:middle;'></image> 支持在线退票</view>
+          <view style='text-align:right;margin-right:13px;font-size: 14px;color: #3C4144;flex:1'>购票/退票须知 <image style='width:7px;height:12px;' src='../../../image/SelectStop/left_cross.png'></image></view>
+      </view>
+    </view>
+  <view style='flex:1'>
+    <view class='notice_view' style='width:{{widowsWidth-20}}px;margin-top:0'>
+      <view style='font-size:15px;'>票价
+        <text style='color:#fc6806'>¥{{ticketPrice}} </text>
+      </view>
+      <view style='flex:1;justify-content:flex-end;display:flex'>
+        <text style='font-size:15px;color:#a3a3a3;'>每单最多{{maxTicketCount}}人,剩余座位{{remainSeatCount}}</text>
+      </view>
+    </view>
+    <view class='notice_view'>
+      <view>全票</view>
+      <view style='flex:1'></view>
+      <view style='width:120px;text-align:right;margin-top:5px'>
+        <view class="stepper">
+          <!-- 减号 -->
+          <text id='fullAdd' class="{{fullMinusStatus}}" bindtap="bindMinus">-</text>
+          <!-- 数值 -->
+          <input id='fullNum' type="number" value='{{fullTicketSum}}' />
+          <!-- 加号 -->
+          <text id='fullDel' class="normal" bindtap="bindPlus">+</text>
+        </view>
+      </view>
+    </view>
+    <view class='notice_view' wx:if='{{issShowHalf}}'>
+      <view>儿童票</view>
+      <view style='flex:1'></view>
+      <view style='width:120px;'>
+        <view class="stepper">
+          <!-- 减号 -->
+          <text id='halfAdd' class="{{halfMinusStatus}}" bindtap="bindMinus">-</text>
+          <!-- 数值 -->
+          <input id='halNum' type="number" value='{{halfTicketSum}}' />
+          <!-- 加号 -->
+          <text id='halfDel' class="normal" bindtap="bindPlus">+</text>
+        </view>
+      </view>
+    </view>
+
+    <view class='notice_view' wx:if='{{issShowTake}}'>携童票
+      <text style='font-size:15px;color:#a3a3a3;margin-left:5px;'>可带1名儿童</text>
+      <view style='flex:1'></view>
+      <view style='width:120px;'>
+        <view class="stepper">
+          <text id='noAdd' class="{{noMinusStatus}}" bindtap="bindMinus">-</text>
+          <input id='noNum' type="number" value='{{noTicketSum}}' />
+          <text id='noDel' class="normal" bindtap="bindPlus">+</text>
+        </view>
+      </view>
+    </view>
+    <view style='width:100%;align-items:flex-start;display:flex;' wx:if='{{issShowTake}}' >
+      <text style='font-size:12px;color:#9b9b9b; padding:0 0 0 10px;width:100%;margin-top:-10px'>
+      1.身高1.2米以下的儿童可申请携童票2.每个成人只购买一张携童票3.本车免费携童票可购买1张，如已售完请购买半票或其它班次
+      </text>
+    </view>
+    <view class='notice_view' bindtap="powerDrawer" data-statu="open" data-type='3'>
+      <view style='font-size:15px;flex:1;'>优惠券
+      </view>
+      <view style='font-size:14px;color:#a5a5a5;width:230px;flex-direction: row;display: flex;justify-content: flex-end; '>
+        <text>{{disCoupe==0?"暂无可用优惠券":disCoupe}}</text>
+        <image style='width:8px;height:12px;padding:5px 0 0 10px;' src='../../../image/Search/right.png'></image>
+      </view>
+    </view>
+    <view class='notice_view' style='font-size:15px;' bindtap="powerDrawer" data-statu="open" data-type='4' wx:if='{{insurance}}'>
+      <checkbox catchtap='checkInsura nce' checked='{{insurance!=""}}' style='transform:scale(.8)'></checkbox>保险
+      <view style='font-size:14px;color:#a5a5a5;flex:1;flex-direction: row;display: flex;justify-content: flex-end;'> {{insurance}}</view>
+    </view>
+  </view>
+</view>
+<view class='container_bottom'>
+  <view class='container_bottom_price' bindtap="powerDrawer" data-statu="open" data-type='2'>
+    <view style='width:70%;font-size: 16px;color: #3C4144;'>单价:<text style='font-size: 16px;color: #F9680F;'>￥{{sum}}</text></view>
+    <view style='width:30%;text-align:right;margin-right:10px;font-size: 12px;color: #979797;'>明细<image style='width:10px;height:5px;vertical-align:middle; margin-left:8px;' src='{{mImgPath}}'></image></view>
+  </view>
+  <view class='container_bottom_submit' bindtap='openPay'>下一步</view>
+</view>
+
+<view class="drawer_screen" bindtap="powerDrawer" data-statu="close" wx:if='{{showModalStatus||showSumModalStatus||showDisModalStatus||showInsurance}}'></view>
+<view class="drawer_attr_box" wx:if="{{showModalStatus}}">
+  <view>
+    <view class="drawer_title line2" bindtap='goPassenger'>+添加常用联系人</view>
+    <view wx:for='{{list}}' wx:key="id">
+      <view class="drawer_title line1" bindtap='setSelectList' data-statu="close" data-type="1" data-value='{{item}}'>
+        <image style='width:16px;height:16px;margin-right: 20px; ' src='../../../image/Search/2.png'></image>
+        <view style='flex-direction: column; display: flex; flex:1;margin-bottom:5px;margin-top:5px;'>
+          <view style='font-size:13px;'>{{item.Name}}</view>
+          <view style='font-size:11px;'>{{item.Code}}</view>
+        </view>
+        <image style='width:16px;height:16px;margin-right: 40px; ' src='../../../image/SelectStop/nodess.png'></image>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="drawer_attr_sumBox" wx:if='{{showSumModalStatus}}'>
+  <view>
+    <view class="drawer_title line_sum2">订单详情</view>
+    <view class="drawer_title line_sum1">
+      <view style='font-size:15px;'>成人票:　</view>
+      <view style='flex:1;flex-direction: row; display: flex;font-size:14px;padding:5px 0 0 0'>
+        <view>￥{{ticketPrice}}</view>
+        <view>x{{fullTicketSum}}人</view>
+      </view>
+    </view>
+    <view class="drawer_title line_sum1" hidden='{{halfTicketSum==0}}'>
+      <view style='font-size:15px;'>儿童票:　</view>
+      <view style='flex:1;flex-direction: row; display: flex;font-size:14px;padding:5px 0 0 0'>
+        <view>￥{{ticketPrice/2}}</view>
+        <view>x{{halfTicketSum}}人</view>
+      </view>
+    </view>
+    <view class="drawer_title line_sum1" hidden='{{noTicketSum==0}}'>
+      <view style='font-size:15px;'>携童票:　</view>
+      <view style='flex:1;flex-direction: row; display: flex;font-size:14px;padding:5px 0 0 0'>
+        <view>￥0</view>
+        <view>x{{noTicketSum}}人</view>
+      </view>
+    </view>
+    <view class="drawer_title line_sum3">
+      <view style='font-size:15px;'>　总额:　</view>
+      <view style='flex:1;flex-direction: column; display: flex;font-size:14px; color:#fb6806'>
+        <view>￥{{oldSum}},
+          <text style='font-size:12px'>优惠{{disVs}}元,保险{{selectIndPrice}}元</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="drawer_attr_box" wx:if='{{showDisModalStatus}}'>
+  <view>
+    <view class="drawer_title line_sum2" style=' background-color: #f9f9f9; border-bottom: dashed 1px #c7ced4;'  bindtap='setCoupons' data-statu="close" data-type="3" data-id='-1' hidden='true'>不使用优惠券</view>
+    <view wx:for='{{disList}}' wx:key="id">
+      <view class="drawer_title line1" bindtap='setCoupons' data-statu="close" data-type="3" data-id='{{item.id}}'>
+        <view style='width:56px;color:red;font-size: 13px; flex-direction: column;display: flex;justify-content: center;'>￥{{item.disValue}}</view>
+        <view style='flex:1'>
+          <view style='color:#989898;font-size:13px'>{{item.discount}}</view>
+          <view style='color:#d5d5d5;font-size:12px;'>有效期：{{item.disDate}}</view>
+        </view>
+        <view style='width:50px;flex-direction: column;display: flex;justify-content: center;'>
+          <image style='width:16px;height:16px; ' src='../../../image/SelectStop/nodess.png'></image>
+        </view>
+      </view>
+    </view>
+    <view style="width:100%;float:left;background-color:#2196f3;height:36px;color:#ffffff;font-size:13px;text-align:center;flex-direction: column;display: flex;justify-content: center;" bindtap="powerDrawer" data-statu="close" data-type="3">关闭</view>
+  </view>
+</view>
+<view class="drawer_attr_box" wx:if='{{showInsurance}}'>
+  <view wx:for='{{insurances}}' wx:key="{{item.id}}" wx:for-index="index" class='notice_view1'>
+    <view style='width:{{widowsWidth-95}}px;font-size:14px;color:#686868'>{{item.Des}}</view>
+    <view style='font-size:13px;color:#fd7013'>{{item.Price}}元</view>
+    <checkbox checked="{{insurance!=''&&selectInd==item.id}}" bindtap="powerDrawer" data-statu="close" data-type="4" data-id='{{item.id}}' style='transform:scale(.8);padding:0 0 0 20px'></checkbox>
+  </view>
+</view>
