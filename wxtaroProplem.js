@@ -322,7 +322,7 @@ Page({
       .then(res => {
         wx.hideLoading()
         if (res.Error == 1) {
-        	 wx.showModal({
+       	   wx.showModal({
 			        title: '温馨提示',
 			        content: res.Message,
 			        showCancel:false
@@ -334,9 +334,9 @@ Page({
           util.redirect('../Pay/index')
         } else {
 		    	wx.showModal({
-				        title: '温馨提示',
-				        content: "下单失败，座位已售完！",
-				        showCancel:false
+				    title: '温馨提示',
+				    content: "下单失败，座位已售完！",
+				    showCancel:false
 				  })
         }
       })
